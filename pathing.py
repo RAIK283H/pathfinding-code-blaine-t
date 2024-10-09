@@ -60,7 +60,45 @@ def get_random_path():
     return path
 
 def get_dfs_path():
-    return [1,2]
+    graph_index = global_game_data.current_graph_index
+    graph = graph_data.graph_data[graph_index]
+
+    start_node = 0
+    target_node = global_game_data.target_node[graph_index]
+    exit_node = len(graph) - 1
+
+    frontier = []
+    frontier.insert(0, start_node)
+
+    visited = set()
+    visited.add(start_node)
+
+    parents = {}
+    parents[start_node] = False
+
+    path = []
+
+    while frontier:
+        current_node = frontier.pop(0)
+        visited.add(current_node)
+
+        # Once reach target refocus to end
+        if current_node == target_node:
+            if target_node == exit_node:
+                break
+            target_node = exit_node
+
+        for neighbor in graph[current_node][1]:
+            if neighbor not in visited:
+                frontier.insert(0, neighbor)
+                parents[neighbor] = current_node
+        
+    while current_node:
+        path.insert(0, current_node)
+        current_node = parents[current_node]
+    
+    return path
+
 
 
 def get_bfs_path():
