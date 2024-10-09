@@ -59,7 +59,7 @@ def get_random_path():
 
     return path
 
-def get_dfs_path():
+def frontier_path(dfs: bool):
     graph_index = global_game_data.current_graph_index
     graph = graph_data.graph_data[graph_index]
 
@@ -77,9 +77,13 @@ def get_dfs_path():
     parents[start_node] = False
 
     path = []
+    current_node = start_node
 
     while frontier:
-        current_node = frontier.pop(0)
+        if dfs:
+            current_node = frontier.pop(0)
+        else:
+            current_node = frontier.pop()
         visited.add(current_node)
 
         # Once reach target refocus to end
@@ -99,10 +103,13 @@ def get_dfs_path():
     
     return path
 
+def get_dfs_path():
+    return frontier_path(dfs=True)
+
 
 
 def get_bfs_path():
-    return [1,2]
+    return frontier_path(dfs=False)
 
 
 def get_dijkstra_path():
