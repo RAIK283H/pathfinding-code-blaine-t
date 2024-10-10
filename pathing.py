@@ -59,57 +59,60 @@ def get_random_path():
 
     return path
 
-def frontier_path(dfs: bool):
+def get_dfs_path():
+
+    return [1,2]
+
+
+def traverse_parents(parents, current_node):
+    path = []
+    while parents[current_node] != -1:
+        path.insert(0, current_node)
+        current_node = parents[current_node]
+    return path
+
+
+def bfs_helper(graph, start_node, target_node):
+    current_node = start_node
+    queue = [start_node]
+
+    visited = [False] * len(graph)
+    visited[start_node] = True
+
+    parents = [0] * len(graph)
+    parents[start_node] = -1
+
+    while queue:
+        current_node = queue.pop(0)
+
+        for neighbor in graph[current_node][1]:
+            if not visited[neighbor]:
+                queue.append(neighbor)
+                visited[neighbor] = True
+                parents[neighbor] = current_node
+
+                # If neighbor is the target then we traverse up the parents to find the path
+                if neighbor == target_node:
+                    current_node = neighbor
+                    return traverse_parents(parents, current_node)
+
+def get_bfs_path():
     graph_index = global_game_data.current_graph_index
     graph = graph_data.graph_data[graph_index]
 
     start_node = 0
     target_node = global_game_data.target_node[graph_index]
-    exit_node = len(graph) - 1
+    end_node = len(graph) - 1
 
-    frontier = []
-    frontier.insert(0, start_node)
+    path = bfs_helper(graph, start_node, target_node)
 
-    visited = set()
-    visited.add(start_node)
-
-    parents = {}
-    parents[start_node] = False
-
-    path = []
-    current_node = start_node
-
-    while frontier:
-        if dfs:
-            current_node = frontier.pop(0)
-        else:
-            current_node = frontier.pop()
-        visited.add(current_node)
-
-        # Once reach target refocus to end
-        if current_node == target_node:
-            if target_node == exit_node:
-                break
-            target_node = exit_node
-
-        for neighbor in graph[current_node][1]:
-            if neighbor not in visited:
-                frontier.insert(0, neighbor)
-                parents[neighbor] = current_node
-        
-    while current_node:
-        path.insert(0, current_node)
-        current_node = parents[current_node]
+    # Reorient from target to end
+    start_node = target_node
+    target_node = end_node
     
+    path.extend(bfs_helper(graph, start_node, target_node))
+
     return path
-
-def get_dfs_path():
-    return frontier_path(dfs=True)
-
-
-
-def get_bfs_path():
-    return frontier_path(dfs=False)
 
 
 def get_dijkstra_path():
