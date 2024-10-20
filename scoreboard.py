@@ -12,6 +12,7 @@ class Scoreboard:
     player_excess_distance_display = []
     player_path_display = []
     player_nodes_visited = []
+    winner_display = []
 
     def __init__(self, batch, group):
         self.batch = batch
@@ -60,6 +61,12 @@ class Scoreboard:
                                             font_size=self.font_size, batch=batch, group=group, color=player[2][colors.TEXT_INDEX])
             self.player_nodes_visited.append(
                 (nodes_visited_label, player))
+        winner_label = pyglet.text.Label("", 
+                                        x=0, 
+                                        y=0,
+                                        font_name='Arial', 
+                                        font_size=self.font_size, batch=batch, group=group)
+        self.winner_display = (winner_label, player)
 
     def update_elements_locations(self):
         self.distance_to_exit_label.x = config_data.window_width - self.stat_width
@@ -79,6 +86,10 @@ class Scoreboard:
         for index, (display_element, player) in enumerate(self.player_nodes_visited):
             display_element.x = config_data.window_width - self.stat_width
             display_element.y = config_data.window_height - self.base_height_offset - self.stat_height * 6 - self.stat_height * (index * self.number_of_stats)
+
+        display_element = self.winner_display[0]
+        display_element.x = config_data.window_width - self.stat_width
+        display_element.y = config_data.window_height - self.stat_height * 24
 
     def update_paths(self):
         for index in range(len(config_data.player_data)):
@@ -112,6 +123,26 @@ class Scoreboard:
             for player_object in global_game_data.player_objects:
                 if player_object.player_config_data == player_configuration_info:
                     display_element.text = "Nodes Visited: " + str(player_object.current_objective)
+    
+    def update_winner(self):
+        graph_index = global_game_data.current_graph_index
+        graph = graph_data.graph_data[graph_index]
+        target_node = global_game_data.target_node[global_game_data.current_graph_index]
+        exit_node = len(graph) - 1
+        display_element, player_configuration_info = self.winner_display
+        shortest_distance = global_game_data.player_objects[0].distance_traveled
+        winner_player_name = config_data.player_data[0][0]
+
+        for index, player in enumerate(global_game_data.player_objects):
+            player_distance_traveled = player.distance_traveled
+            path = global_game_data.graph_paths[index]
+            target_in_path = target_node in path
+            exit_in_path = exit_node in path
+
+            if(target_in_path and exit_in_path and player_distance_traveled < shortest_distance):
+                shortest_distance = player_distance_traveled
+                winner_player_name = config_data.player_data[index][0]
+        display_element.text = "Winner: " + str(winner_player_name)
 
     def update_scoreboard(self):
         self.update_elements_locations()
@@ -119,3 +150,4 @@ class Scoreboard:
         self.update_distance_to_exit()
         self.update_distance_traveled()
         self.update_nodes_visited()
+        self.update_winner()
