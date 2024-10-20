@@ -59,9 +59,45 @@ def get_random_path():
 
     return path
 
-def get_dfs_path():
+def dfs_helper(graph, start_node, target_node):
+    stack = [start_node]
 
-    return [1,2]
+    visited = [False] * len(graph)
+    visited[start_node] = True
+
+    parents = [0] * len(graph)
+    parents[start_node] = -1
+
+    while stack:
+        current_node = stack.pop()
+
+        for neighbor in graph[current_node][1]:
+            if not visited[neighbor]:
+                stack.append(neighbor)
+                visited[neighbor] = True
+                parents[neighbor] = current_node
+
+                # If neighbor is the target then we traverse up the parents to find the path
+                if neighbor == target_node:
+                    return traverse_parents(parents, neighbor)
+
+def get_dfs_path():
+    graph_index = global_game_data.current_graph_index
+    graph = graph_data.graph_data[graph_index]
+
+    start_node = 0
+    target_node = global_game_data.target_node[graph_index]
+    end_node = len(graph) - 1
+
+    path = dfs_helper(graph, start_node, target_node)
+
+    # Reorient from target to end
+    start_node = target_node
+    target_node = end_node
+
+    path.extend(dfs_helper(graph, start_node, target_node))
+
+    return path
 
 
 def traverse_parents(parents, current_node):
