@@ -87,15 +87,24 @@ def get_dfs_path():
 
     start_node = 0
     target_node = global_game_data.target_node[graph_index]
-    end_node = len(graph) - 1
+    exit_node = len(graph) - 1
 
     path = dfs_helper(graph, start_node, target_node)
 
     # Reorient from target to end
     start_node = target_node
-    target_node = end_node
+    target_node = exit_node
 
     path.extend(dfs_helper(graph, start_node, target_node))
+
+    # Postcondition
+    # the target node is in the path
+    # the last node is the exit node
+    # each node in the path is connected to the next node
+    assert target_node in path
+    assert path[-1] == exit_node
+    for i in range(len(path) - 1):
+        assert path[i + 1] in graph[path[i]][1]
 
     return path
 
@@ -138,15 +147,24 @@ def get_bfs_path():
 
     start_node = 0
     target_node = global_game_data.target_node[graph_index]
-    end_node = len(graph) - 1
+    exit_node = len(graph) - 1
 
     path = bfs_helper(graph, start_node, target_node)
 
     # Reorient from target to end
     start_node = target_node
-    target_node = end_node
-    
+    target_node = exit_node
+
     path.extend(bfs_helper(graph, start_node, target_node))
+
+    # Postcondition
+    # the target node is in the path
+    # the last node is the exit node
+    # each node in the path is connected to the next node
+    assert target_node in path
+    assert path[-1] == exit_node
+    for i in range(len(path) - 1):
+        assert path[i + 1] in graph[path[i]][1]
 
     return path
 
