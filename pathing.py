@@ -95,12 +95,17 @@ def get_dfs_path():
     start_node = target_node
     target_node = exit_node
 
-    path.extend(dfs_helper(graph, start_node, target_node))
+    second_path = dfs_helper(graph, start_node, target_node)
+
+    if (path is not None and second_path is not None):
+        path.extend(second_path)
 
     # Postcondition
+    # the path exists
     # the target node is in the path
     # the last node is the exit node
     # each node in the path is connected to the next node
+    assert path is not None
     assert target_node in path
     assert path[-1] == exit_node
     for i in range(len(path) - 1):
@@ -155,12 +160,17 @@ def get_bfs_path():
     start_node = target_node
     target_node = exit_node
 
-    path.extend(bfs_helper(graph, start_node, target_node))
+    second_path = bfs_helper(graph, start_node, target_node)
+
+    if (path is not None and second_path is not None):
+        path.extend(second_path)
 
     # Postcondition
+    # the path exists
     # the target node is in the path
     # the last node is the exit node
     # each node in the path is connected to the next node
+    assert path is not None
     assert target_node in path
     assert path[-1] == exit_node
     for i in range(len(path) - 1):
