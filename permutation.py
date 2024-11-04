@@ -2,6 +2,7 @@
 This module implements the Steinhaus-Johnson-Trotter algorithm for generating permutations.
 """
 
+
 def get_permutations_sjt(n):
     """
     Generates all permutations of numbers from 1 to n-1 using Steinhaus-Johnson-Trotter.
@@ -12,6 +13,7 @@ def get_permutations_sjt(n):
     Returns:
         list: A list of all permutations.
     """
+
     def get_largest_mobile(permutation, directions):
         largest_mobile_integer = -1
         largest_mobile_index = -1
@@ -40,7 +42,9 @@ def get_permutations_sjt(n):
 
     while mobile:
         # Get largest_mobile and then adjacent variables
-        largest_mobile_index, largest_mobile_integer = get_largest_mobile(permutation, directions)
+        largest_mobile_index, largest_mobile_integer = get_largest_mobile(
+            permutation, directions
+        )
         if largest_mobile_index == -1:
             mobile = False
             continue
