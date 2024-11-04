@@ -87,19 +87,21 @@ def get_hamiltonian_cycles(graph):
     hamiltonian_cycles = []
 
     for permutation in permutations:
-        is_hamiltonian = True
+        is_hamiltonian_cycle = True
         for i, node in enumerate(permutation):
-            # Guard if next doesn't exist
+            next_node = None
+            # If over loop back to start
             if i + 1 >= len(permutation):
-                break
-
-            next_node = permutation[i + 1]
+                next_node = permutation[0]
+            else:
+                next_node = permutation[i + 1]
+            
             current_node_connections = graph[node][1]
 
             if next_node not in current_node_connections:
-                is_hamiltonian = False
+                is_hamiltonian_cycle = False
                 break
-        if is_hamiltonian:
+        if is_hamiltonian_cycle:
             hamiltonian_cycles.append(permutation)
 
     if len(hamiltonian_cycles) == 0:
