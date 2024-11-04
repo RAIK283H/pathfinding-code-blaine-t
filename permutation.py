@@ -2,7 +2,7 @@
 This module implements the Steinhaus-Johnson-Trotter algorithm for generating permutations.
 """
 
-def sjt(n):
+def get_permutations_sjt(n):
     """
     Generates all permutations of numbers from 1 to n-1 using Steinhaus-Johnson-Trotter.
 
@@ -79,7 +79,7 @@ def get_hamiltonian_cycles(graph):
         list: list of all hamiltonian cycles
     """
     graph_length = len(graph)
-    permutations = sjt(graph_length - 1)
+    permutations = get_permutations_sjt(graph_length - 1)
     hamiltonian_cycles = []
 
     for permutation in permutations:
