@@ -66,3 +66,39 @@ def sjt(n):
         all_permutations.append(permutation.copy())
 
     return all_permutations
+
+
+def get_hamiltonian_cycles(graph):
+    """
+    Takes in a graph, calls sjt to generate permutations, and then responds with hamiltonian cycles.
+
+    Args:
+        graph (graph_data[i]): The graph to inspect
+
+    Returns:
+        list: list of all hamiltonian cycles
+    """
+    graph_length = len(graph)
+    permutations = sjt(graph_length - 1)
+    hamiltonian_cycles = []
+
+    for permutation in permutations:
+        is_hamiltonian = True
+        for i, node in enumerate(permutation):
+            # Guard if next doesn't exist
+            if i + 1 >= len(permutation):
+                break
+
+            next_node = permutation[i + 1]
+            current_node_connections = graph[node][1]
+
+            if next_node not in current_node_connections:
+                is_hamiltonian = False
+                break
+        if is_hamiltonian:
+            hamiltonian_cycles.append(permutation)
+
+    if len(hamiltonian_cycles) == 0:
+        return -1
+
+    return hamiltonian_cycles
