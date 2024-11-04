@@ -138,7 +138,7 @@ class TestPathFinding(unittest.TestCase):
             [2, 3, 1],
             [2, 1, 3],
         ]
-        assert actual_permutations == expected_permutations
+        self.assertEqual(actual_permutations, expected_permutations)
 
     def test_get_permutations_sjt_5(self):
         actual_permutations = get_permutations_sjt(5)
@@ -168,7 +168,7 @@ class TestPathFinding(unittest.TestCase):
             [2, 1, 4, 3],
             [2, 1, 3, 4],
         ]
-        assert actual_permutations == expected_permutations
+        self.assertEqual(actual_permutations, expected_permutations)
 
     def test_get_hamiltonian_cycles_happy_path(self):
         graph = [
@@ -180,7 +180,7 @@ class TestPathFinding(unittest.TestCase):
         ]
         actual_hamiltonian_cycles = get_hamiltonian_cycles(graph)
         expected_hamiltonian_cycles = [[1, 2, 3], [3, 2, 1]]
-        assert actual_hamiltonian_cycles == expected_hamiltonian_cycles
+        self.assertEqual(actual_hamiltonian_cycles, expected_hamiltonian_cycles)
 
     def test_get_hamiltonian_cycles_unhappy_path(self):
         graph = [
@@ -193,7 +193,7 @@ class TestPathFinding(unittest.TestCase):
         ]
         actual_hamiltonian_cycles = get_hamiltonian_cycles(graph)
         expected_hamiltonian_cycles = -1
-        assert actual_hamiltonian_cycles == expected_hamiltonian_cycles
+        self.assertEqual(actual_hamiltonian_cycles, expected_hamiltonian_cycles)
 
 
 if __name__ == "__main__":
