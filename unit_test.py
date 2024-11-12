@@ -3,7 +3,7 @@ import unittest
 
 import global_game_data
 import graph_data
-from pathing import get_bfs_path, get_dfs_path
+from pathing import get_bfs_path, get_dfs_path, get_dijkstra_path
 from permutation import get_permutations_sjt, get_hamiltonian_cycles
 
 
@@ -77,6 +77,57 @@ class TestPathFinding(unittest.TestCase):
         except AssertionError:
             return
         self.fail("BFS didn't throw an assertion error")
+
+    def test_dijkstras_path_working(self):
+        graph_index = 0
+        target_node = 5
+
+        global_game_data.current_graph_index = graph_index
+        global_game_data.target_node = {graph_index: target_node}
+        graph_data.graph_data = {
+            graph_index: [
+                ((0,0), [1, 2]),
+                ((1,0), [3]),
+                # In an attempt to throw it off by shortest amount of nodes. DFS and BFS would take this
+                ((-100,0), [9]),
+                ((3,0), [5]),
+                ((4,0), [5]),
+                ((5,0), [6, 7]),
+                ((6,0), [8]),
+                ((7,0), [8]),
+                ((8,0), [9]),
+                ((9,0), []),
+            ]
+        }
+        expected_path = [1, 3, 5, 6, 8, 9]
+        dijkstra_path = get_dijkstra_path()
+        self.assertEqual(dijkstra_path, expected_path)
+
+    def test_dijkstras_failing(self):
+        graph_index = 0
+        target_node = 5
+
+        global_game_data.current_graph_index = graph_index
+        global_game_data.target_node = {graph_index: target_node}
+        graph_data.graph_data = {
+            graph_index: [
+                ((0,0), [1, 2]),
+                ((1,0), [3]),
+                ((2,0), [3, 4]),
+                ((3,0), []),
+                ((4,0), []),
+                ((5,0), []),
+                ((6,0), [8]),
+                ((7,0), [8]),
+                ((8,0), [9]),
+                ((9,0), []),
+            ]
+        }
+        try:
+            get_dijkstra_path()
+        except AssertionError:
+            return
+        self.fail("Dijkstra's didn't throw an assertion error")
 
     def test_dfs_path(self):
         graph_index = 0
