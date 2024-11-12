@@ -1,5 +1,13 @@
 # Pathfinding Starter Code
 
+## EXTRA CREDIT
+
+### Homework 6
+
+- [x] 5 points EXTRA CREDIT: implement heapq or PriorityQueue with methods to properly update
+item priorities (instead of sorting or linearly searching for the item with the highest priority)
+- [ ] 5 points EXTRA CREDIT: implementing A* using any admissible heuristic
+
 ## Customer Requirements
 
 - i. The player should be able to return to the start
