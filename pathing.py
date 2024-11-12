@@ -53,7 +53,7 @@ def get_random_path():
     # the target node is in the path
     # the last node is the exit node
     # each node in the path is connected to the next node
-    assert start_node in graph[path[0]][1]
+    assert path[0] in graph[0][1]
     assert target_node in path
     assert path[-1] == exit_node
     for i in range(len(path) - 1):
