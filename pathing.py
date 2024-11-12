@@ -1,6 +1,8 @@
 import graph_data
 import global_game_data
 from numpy import random
+import heapq
+import math
 
 def set_current_graph_paths():
     global_game_data.graph_paths.clear()
@@ -178,6 +180,61 @@ def get_bfs_path():
 
     return path
 
+def dijkstra_helper(graph, start_node, target_node):
+    priority_queue = []
+    heapq.heappush(priority_queue, (0, start_node))
+
+    distances = [float('inf')] * len(graph)
+    distances[start_node] = 0
+
+    parents = [0] * len(graph)
+    parents[start_node] = -1
+
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+
+        if current_node == target_node:
+            return traverse_parents(parents, current_node)
+
+        current_x, current_y = graph[current_node][0]
+        for neighbor in graph[current_node][1]:
+            neighbor_x, neighbor_y = graph[neighbor][0]
+            weight = math.sqrt((current_x - neighbor_x)**2 + (current_y - neighbor_y)**2)
+            distance = current_distance + weight
+
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                parents[neighbor] = current_node
+                heapq.heappush(priority_queue, (distance, neighbor))
 
 def get_dijkstra_path():
-    return [1,2]
+    graph_index = global_game_data.current_graph_index
+    graph = graph_data.graph_data[graph_index]
+
+    start_node = 0
+    target_node = global_game_data.target_node[graph_index]
+    exit_node = len(graph) - 1
+
+    path = dijkstra_helper(graph, start_node, target_node)
+
+    # Reorient from target to end
+    start_node = target_node
+    target_node = exit_node
+
+    second_path = dijkstra_helper(graph, start_node, target_node)
+
+    if path and second_path:
+        path.extend(second_path)
+
+    # Postcondition
+    # the path exists
+    # the path begins at the start node
+    # the path ends at the exit node
+    # each node in the path is connected to the next node
+    assert path
+    assert path[0] in graph[0][1]
+    assert path[-1] == exit_node
+    for i in range(len(path) - 1):
+        assert path[i + 1] in graph[path[i]][1]
+
+    return path
