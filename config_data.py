@@ -1,6 +1,6 @@
 import colors
-window_width = 1400
-window_height = 900
+window_width = 1920
+window_height = 1020
 starting_player_index = 0
 starting_graph_index = 0
 

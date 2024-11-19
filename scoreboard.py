@@ -89,7 +89,7 @@ class Scoreboard:
 
         display_element = self.winner_display[0]
         display_element.x = config_data.window_width - self.stat_width
-        display_element.y = config_data.window_height - self.stat_height * 24
+        display_element.y = config_data.window_height - self.stat_height * 28
 
     def update_paths(self):
         for index in range(len(config_data.player_data)):
