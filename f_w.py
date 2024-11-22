@@ -40,17 +40,16 @@ def floyd_warshall_path(P, i, j):
     path.extend(floyd_warshall_path(P, P[i][j], j))
     return path
 
-def get_floyd_warshall_path(index):
+def get_floyd_warshall_path():
+    index = global_game_data.current_graph_index
     matrix = adjacency_list_to_matrix(index)
     start = 0
-    target = 3
+    target = global_game_data.target_node[index]
     end = len(matrix) - 1
     P = floyd_warshall(matrix)
-    startToTarget = floyd_warshall_path(P, start, target)
-    targetToEnd = floyd_warshall_path(P, target, end)
-    startToTarget.pop(0)
-    startToTarget.pop()
-    startToTarget.extend(targetToEnd)
-    return startToTarget
-
-print(get_floyd_warshall_path(4))
+    start_to_target = floyd_warshall_path(P, start, target)
+    target_to_end = floyd_warshall_path(P, target, end)
+    start_to_target.pop(0)
+    start_to_target.pop()
+    start_to_target.extend(target_to_end)
+    return start_to_target

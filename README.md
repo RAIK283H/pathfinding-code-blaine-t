@@ -8,6 +8,10 @@
 item priorities (instead of sorting or linearly searching for the item with the highest priority)
 - [ ] 5 points EXTRA CREDIT: implementing A* using any admissible heuristic
 
+### Homework 7
+
+- [x] 5 points EXTRA CREDIT: switch out the Dijkstra player and make it a Floyd-Warshall player!
+
 ## Customer Requirements
 
 - i. The player should be able to return to the start
