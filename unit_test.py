@@ -5,6 +5,7 @@ import global_game_data
 import graph_data
 from pathing import get_bfs_path, get_dfs_path, get_dijkstra_path
 from permutation import get_permutations_sjt, get_hamiltonian_cycles
+from f_w import get_floyd_warshall_path
 
 
 class TestPathFinding(unittest.TestCase):
@@ -268,6 +269,31 @@ class TestPathFinding(unittest.TestCase):
         actual_hamiltonian_cycles = get_hamiltonian_cycles(graph)
         expected_hamiltonian_cycles = -1
         self.assertEqual(actual_hamiltonian_cycles, expected_hamiltonian_cycles)
+
+    def test_floyd_warshall_finds_shortest_path(self):
+        graph_index = 0
+        target_node = 5
+
+        global_game_data.current_graph_index = graph_index
+        global_game_data.target_node = {graph_index: target_node}
+        graph_data.graph_data = {
+            graph_index: [
+                ((0, 0), [1, 2]),
+                ((100, 0), [3]),
+                ((2, 0), [3, 4]),
+                ((300, 0), [5]),
+                ((4, 0), [5]),
+                ((500, 0), [6, 7]),
+                ((6, 0), [8]),
+                ((7, 0), [8]),
+                ((8, 0), [9]),
+                ((9, 0), []),
+            ]
+        }
+        expected_path = [2, 4, 5, 7, 8, 9]
+        f_w_path = get_floyd_warshall_path()
+        self.assertEqual(f_w_path, expected_path)
+    
 
 
 if __name__ == "__main__":
