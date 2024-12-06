@@ -283,8 +283,8 @@ class TestPathFinding(unittest.TestCase):
                 ((2, 0), [3, 4]),
                 ((300, 0), [5]),
                 ((4, 0), [5]),
-                ((500, 0), [6, 7]),
-                ((6, 0), [8]),
+                ((-500, 0), [6, 7]),
+                ((6, 1), [8]),
                 ((7, 0), [8]),
                 ((8, 0), [9]),
                 ((9, 0), []),
@@ -293,8 +293,6 @@ class TestPathFinding(unittest.TestCase):
         expected_path = [2, 4, 5, 7, 8, 9]
         f_w_path = get_floyd_warshall_path()
         self.assertEqual(f_w_path, expected_path)
-    
-
 
 if __name__ == "__main__":
     unittest.main()
